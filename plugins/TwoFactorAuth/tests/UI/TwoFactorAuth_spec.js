@@ -130,7 +130,7 @@ describe("TwoFactorAuth", function () {
         await page.type('.loginTwoFaForm #login_form_authcode', '123456');
         await page.click('.loginTwoFaForm #login_form_submit');
         await page.waitForNetworkIdle();
-        await page.waitForSelector('.widget');
+        await page.waitForSelector('.widget', { timeout: 60000 });
         await page.waitForNetworkIdle();
 
         // do not take a screenshot, as it's not relevant. We only check if there is the right amount of widgets loaded
@@ -171,7 +171,7 @@ describe("TwoFactorAuth", function () {
     it('should be possible to disable two factor', async function () {
         await loginUser('with2FADisable');
         await page.goto(userSettings);
-        await page.waitForSelector('.disable2FaLink');
+        await page.waitForSelector('.disable2FaLink', { timeout: 60000 });
         await page.click('.disable2FaLink');
 
         const modal = await page.$('.modal.open');
@@ -237,7 +237,7 @@ describe("TwoFactorAuth", function () {
             $('.setupConfirmAuthCodeForm .confirmAuthCode').click();
         });
         await page.waitForNetworkIdle();
-        await page.waitForSelector('#content', { visible: true });
+        await page.waitForSelector('#content', { visible: true, timeout: 60000 });
         await page.waitForNetworkIdle();
         const element = await page.$('#content');
         expect(await element.screenshot()).to.matchImage('twofa_setup_step4');
